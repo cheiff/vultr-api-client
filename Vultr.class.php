@@ -1,4 +1,5 @@
 <?php
+namespace API_vultr;
 
 /**
  * Vultr.com API Client
@@ -829,6 +830,13 @@ class Vultr
     $apisess = curl_init();
     curl_setopt_array($apisess, $_defaults);
     $response = curl_exec($apisess);
+    if (!is_object(json_decode($response)))
+    {
+      //retry in 2 seconds
+      sleep(2);
+      $response = curl_exec($apisess);
+    }
+
     $this->writeLast();
 
     /**
