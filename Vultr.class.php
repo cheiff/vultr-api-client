@@ -813,7 +813,7 @@ class Vultr
 
         $cacheable = true;
         $response = $this->serveFromCache($_defaults[CURLOPT_URL]);
-	if ($response !== false)
+        if ($response !== false)
         {
           //echo "FROM CACHE: $url\n";
           return $response;
@@ -832,8 +832,6 @@ class Vultr
     $response = curl_exec($apisess);
     if (!is_object(json_decode($response)))
     {
-      //retry in 2 seconds
-      sleep(2);
       $response = curl_exec($apisess);
     }
 
@@ -922,8 +920,10 @@ class Vultr
       $old = time() - ($this->cache_ttl * 2);
       foreach($files as $file)
       {
-        if (filemtime($file) < $old)
+        if (filemtime($file) < $old AND file_exists($old))
+        {
           unlink($old);
+        }
       }
     }
 
