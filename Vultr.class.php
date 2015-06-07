@@ -358,12 +358,16 @@ class Vultr
   /**
    * List servers
    * @see https://www.vultr.com/api/#server_server_list
+   * @reset forces purgeCache
    * @return mixed List of servers
    */
 
-  public function server_list()
+  public function server_list($purge = false)
   {
-    return self::get('server/list');
+    $url = 'server/list';
+    if ($purge)
+      $this->purgeCache($url);
+    return self::get($url);
   }
 
   /**
