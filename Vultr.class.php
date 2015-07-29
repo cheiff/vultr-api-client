@@ -348,7 +348,7 @@ class Vultr
     $availability = self::regions_availability((int) $region_id);
     if (!in_array((int) $plan_id, $availability))
     {
-      throw new Exception('Plan ID ' . $plan_id . ' is not available in region ' . $region_id);
+      throw new \Exception('Plan ID ' . $plan_id . ' is not available in region ' . $region_id);
       return FALSE;
     } else {
       return TRUE;
@@ -653,12 +653,13 @@ class Vultr
     {
       $available = self::server_available($region_id, $plan_id);
     }
-    catch (Exception $e)
+    catch (\Exception $e)
     {
       return FALSE;
     }
 
     $create = self::post('server/create', $config);
+    \Misc::log($create);
     return (int) $create['SUBID'];
 
   }
@@ -850,7 +851,7 @@ class Vultr
     {
       self::isAPIError($apisess, $response);
     }
-    catch(Exception $e)
+    catch(\Exception $e)
     {
       curl_close($apisess);
       return $e->getMessage() . PHP_EOL;
@@ -905,11 +906,11 @@ class Vultr
     switch($code)
     {
       case 200: break;
-      case 400: throw new Exception('Invalid API location. Check the URL that you are using'); break;
-      case 403: throw new Exception('Invalid or missing API key. Check that your API key is present and matches your assigned key'); break;
-      case 405: throw new Exception('Invalid HTTP method. Check that the method (POST|GET) matches what the documentation indicates'); break;
-      case 500: throw new Exception('Internal server error. Try again at a later time'); break;
-      case 412: throw new Exception('Request failed: ' . $response); break;
+      case 400: throw new \Exception('Invalid API location. Check the URL that you are using'); break;
+      case 403: throw new \Exception('Invalid or missing API key. Check that your API key is present and matches your assigned key'); break;
+      case 405: throw new \Exception('Invalid HTTP method. Check that the method (POST|GET) matches what the documentation indicates'); break;
+      case 500: throw new \Exception('Internal server error. Try again at a later time'); break;
+      case 412: throw new \Exception('Request failed: ' . $response); break;
       default:  break;
     }
 
